@@ -59,7 +59,7 @@ if (isset($_COOKIE['signin-error'])) {
             </div>
             <div class="form-group">
                 <div class="col-sm-6">
-                    <input type="checkbox" name="remember" class="form-control">
+                    <input type="checkbox" name="remember" class="form-control" <?php error_reporting(0);if (isset($_COOKIE['remember-uname'])) {echo "checked";}?> >
                     <label class="col-sm-3 control-label"> Remember Me </label>
                 </div>
             </div>
