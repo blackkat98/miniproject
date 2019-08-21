@@ -11,17 +11,17 @@ class SignupController {
 		$user = $user->findByName($uname);
 		if ($user->uname != null) {
 			$this->ifFail();
-		} else {
+		} elseif ($user->uname == null) {
 			$newUser->save();
 			session_start();
-			$_SESSION['uname'] = $uname;
+			$_SESSION['uname'] = $newUser->uname;
 			header('Location: ../../views/client/home.php');
 		}
 	}
 
 	public function ifFail() {
 		ob_start();
-		setcookie('signup-error', 'User Info Invalid', time() + 1, '/');
+		setcookie('signup-error', 'Username already used', time() + 1, '/');
 		ob_end_flush();
 		header('Location: ../../views/auth/signup.php');
 	}

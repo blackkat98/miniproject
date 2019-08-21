@@ -5,15 +5,18 @@ if (isset($_SESSION['uname'])) {
 }
 
 require_once '../../models/User.php';
-
-if (isset($_COOKIE['keep-login'])) {
-	$uname = $_COOKIE['keep-login'];
+error_reporting(0);
+if (isset($_COOKIE['keep-signin'])) {
+	$cookie = $_COOKIE['keep-signin'];
 	$user = new User();
-	$user = $user->findByName($uname);
-	if ($user->is_admin == 1) {
-		header('Location: ../../views/admin/panel.php');
-	} elseif ($user->is_admin == 0) {
-		header('Location: ../../views/client/home.php');
+	$user = $user->findByToken($cookie);
+	if ($user->uname != null) {
+		$_SESSION['uname'] = $user->uname;
+		if ($user->is_admin == 1) {
+			header('Location: ../../views/admin/panel.php');
+		} elseif ($user->is_admin == 0) {
+			header('Location: ../../views/client/home.php');
+		}
 	}
 }
 ?>

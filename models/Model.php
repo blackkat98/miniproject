@@ -4,7 +4,7 @@ require_once '../../Connection.php';
 class Model {
 	public $table;
 	public $class;
-	public $defaultFields = ["id", "created_at", "updated_at", "is_admin", "table", "defaultFields", "uniqueFields"];
+	public $defaultFields = ["id", "created_at", "updated_at", "is_admin", "table", "defaultFields", "uniqueFields", "remember_token"];
 	public $uniqueFields = array();
 
 	public function getClass() {

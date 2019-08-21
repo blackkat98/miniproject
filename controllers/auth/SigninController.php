@@ -16,9 +16,7 @@ class SigninController {
 					ob_end_flush();
 				}
 				if (isset($_POST['keep'])) {
-					ob_start();
-					setcookie('keep-login', $user->uname, time() + 86400 * 365 * 10, '/');
-					ob_end_flush();
+					$this->codeGenerate($user);
 				}
 				session_start();
 				$_SESSION['uname'] = $uname;
@@ -39,6 +37,20 @@ class SigninController {
 		}
 	}
 
+	public function codeGenerate(User $user) {
+		$char = "abcdefghijklmnopqrstuvwxyz0123456789";
+		$code = "";
+		for ($i = 0; $i < 10; $i++) {
+			$code .= $char[rand(0, strlen($char) - 1)];
+		}
+		ob_start();
+		setcookie('keep-signin', $code, time() + 86400 * 365 * 10, '/');
+		ob_end_flush();
+		$con = Connection::getInstance();
+		$sql = $con->prepare("UPDATE tblUser SET remember_token = ? WHERE id = ?");
+		$sql->execute([$code, $user->id]);
+	}
+
 	public function ifFail() {
 		ob_start();
 		setcookie('signin-error', 'User Info Invalid', time() + 1, '/');
@@ -51,6 +63,10 @@ class SigninController {
 		session_start();
 		$_SESSION['uname'] = array();
 		session_destroy();
+
+		ob_start();
+		setcookie('keep-signin', '', time() - 3600, '/');
+		ob_end_flush();
 
 		header('Location: ../../views/auth/signin.php');
 	}

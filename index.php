@@ -1,20 +1,9 @@
 <?php
 session_start();
 if (isset($_SESSION['uname'])) {
-	header('Location: ../../views/client/home.php');
-}
-
-require_once '../../models/User.php';
-
-if (isset($_COOKIE['keep-login'])) {
-	$uname = $_COOKIE['keep-login'];
-	$user = new User();
-	$user = $user->findByName($uname);
-	if ($user->is_admin == 1) {
-		header('Location: ../../views/admin/panel.php');
-	} elseif ($user->is_admin == 0) {
-		header('Location: ../../views/client/home.php');
-	}
+	header('Location: views/client/home.php');
+} else {
+	header('Location: views/auth/signin.php');
 }
 ?>
 
