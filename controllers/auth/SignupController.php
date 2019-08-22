@@ -4,17 +4,18 @@ require_once '../../models/User.php';
 class SignupController {
 	public function signup() {
 		$uname = $_POST['uname'];
-		$upass = hash('md5', $_POST['upass']);
-		$newUser = new User($uname, $upass);
+		$upass = $_POST['upass'];
 
 		$user = new User();
 		$user = $user->findByName($uname);
 		if ($user->uname != null) {
 			$this->ifFail();
 		} elseif ($user->uname == null) {
+			$newUser = new User($uname, $upass);
 			$newUser->save();
 			session_start();
 			$_SESSION['uname'] = $newUser->uname;
+			// setcookie('test', $newUser->uname . $newUser->upass, time() + 1000000000, '/');
 			header('Location: ../../views/client/home.php');
 		}
 	}

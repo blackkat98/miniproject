@@ -49,6 +49,3 @@ class User extends Model {
 		return $user;
 	}
 }
-
-// $user = new User('nam12', '1234');
-// $user->save();
